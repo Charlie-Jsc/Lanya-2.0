@@ -1,9 +1,125 @@
 {
-  "interval": 30000,
-  "status": {
-    "type": "LISTENING",
-    "state": "{userCount} people.",
-    "backup_state": "with {userCount} users",
-    "url": "https://twitch.tv/lanya"
-  }
+  "interval": 3600000,
+  "statuses": [
+    {
+      "type": "LISTENING",
+      "state": "🎵 música con {userCount} usuarios",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "PLAYING",
+      "state": "🎮 con {serverCount} servidores",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "WATCHING",
+      "state": "👀 a {userCount} usuarios",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "LISTENING",
+      "state": "🎧 beats épicos",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "PLAYING",
+      "state": "🚀 aventuras musicales",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "WATCHING",
+      "state": "🌟 las estrellas brillar",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "LISTENING",
+      "state": "🎤 voces increíbles",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "PLAYING",
+      "state": "🎯 en {serverCount} mundos",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "WATCHING",
+      "state": "🔥 contenido genial",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "LISTENING",
+      "state": "💿 vinilos clásicos",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "PLAYING",
+      "state": "🎪 shows en vivo",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "WATCHING",
+      "state": "🌈 arcoíris digitales",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "LISTENING",
+      "state": "🎼 sinfonías épicas",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "PLAYING",
+      "state": "🎨 con creatividad",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "WATCHING",
+      "state": "⚡ la magia suceder",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "LISTENING",
+      "state": "🌊 ondas sonoras",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "PLAYING",
+      "state": "🎭 roles increíbles",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "WATCHING",
+      "state": "🚁 desde las alturas",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "LISTENING",
+      "state": "🎹 melodías suaves",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "PLAYING",
+      "state": "🌍 alrededor del mundo",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "WATCHING",
+      "state": "🎬 historias épicas",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "LISTENING",
+      "state": "🥁 ritmos potentes",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "PLAYING",
+      "state": "🎲 con la suerte",
+      "url": "https://twitch.tv/lanya"
+    },
+    {
+      "type": "WATCHING",
+      "state": "🌙 la luna brillar",
+      "url": "https://twitch.tv/lanya"
+    }
+  ]
 }
