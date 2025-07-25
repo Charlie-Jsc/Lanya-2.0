@@ -1,24 +1,23 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { t } = require('../../utils/translations');
 const ms = require('ms');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('ban')
-    .setDescription('Ban a member from the server.')
+    .setDescription('Banear un miembro del servidor.')
     .addUserOption((option) =>
-      option.setName('user').setDescription('The user to ban').setRequired(true)
+      option.setName('user').setDescription('El usuario a banear').setRequired(true)
     )
     .addStringOption((option) =>
       option
         .setName('reason')
-        .setDescription('Reason for banning the user')
+        .setDescription('Razón para banear al usuario')
         .setRequired(false)
     )
     .addStringOption((option) =>
       option
         .setName('duration')
-        .setDescription('Duration for temporary ban (e.g., "2d1h30m40s")')
+        .setDescription('Duración del ban temporal (ej: "2d1h30m40s")')
         .setRequired(false)
     ),
 
@@ -26,12 +25,12 @@ module.exports = {
     const { default: prettyMs } = await import('pretty-ms');
     const user = interaction.options.getUser('user');
     const reason =
-      interaction.options.getString('reason') || t('ban.noReasonProvided');
+      interaction.options.getString('reason') || 'No se proporcionó razón.';
     const duration = interaction.options.getString('duration');
     const member = interaction.guild.members.cache.get(user.id);
     if (!member) {
       return interaction.reply({
-        content: t('ban.userNotInServer'),
+        content: 'El usuario no está en el servidor',
         ephemeral: true,
       });
     }
@@ -42,20 +41,20 @@ module.exports = {
 
     if (!interaction.member.permissions.has('BanMembers')) {
       return interaction.reply({
-        content: t('ban.noPermission'),
+        content: '¡No tienes permisos de `BanMembers` para banear miembros!',
         ephemeral: true,
       });
     }
 
     if (member.roles.highest.position >= executor.roles.highest.position) {
       return interaction.reply({
-        content: t('ban.cannotBanHigherRole'),
+        content: 'No puedes banear a este usuario ya que tiene un rol superior o igual.',
         ephemeral: true,
       });
     }
     if (member.roles.highest.position >= botMember.roles.highest.position) {
       return interaction.reply({
-        content: t('ban.botCannotBanHigherRole'),
+        content: 'No puedo banear a este usuario ya que tiene un rol superior o igual al mío.',
         ephemeral: true,
       });
     }
@@ -66,7 +65,7 @@ module.exports = {
     if (duration) {
       if (!durationRegex.test(duration)) {
         return interaction.reply({
-          content: t('ban.invalidDuration'),
+          content: '¡Formato de duración inválido! Usa algo como `1d2h30m40s`.',
           ephemeral: true,
         });
       }
@@ -77,20 +76,20 @@ module.exports = {
 
     const banEmbed = new EmbedBuilder()
       .setColor(0xff0000)
-      .setTitle(t('ban.memberBanned'))
-      .setDescription(t('ban.userBannedDescription', { user: user.tag }))
+      .setTitle('Miembro Baneado')
+      .setDescription(`⛔ ${user.tag} ha sido baneado del servidor.`)
       .addFields(
-        { name: t('ban.reason'), value: reason, inline: true },
+        { name: 'Razón', value: reason, inline: true },
         {
-          name: t('ban.bannedBy'),
+          name: 'Baneado por',
           value: `<@${interaction.user.id}>`,
           inline: true,
         },
         {
-          name: t('ban.duration'),
+          name: 'Duración',
           value: durationInMs
             ? prettyMs(durationInMs, { verbose: true })
-            : t('ban.permanent'),
+            : 'Permanente',
           inline: true,
         }
       )
@@ -103,7 +102,7 @@ module.exports = {
         try {
           await interaction.guild.members.unban(
             user.id,
-            'Temporary ban duration expired'
+            'Duración del ban temporal expirada'
           );
         } catch (error) {
           console.error(`Failed to unban ${user.tag}:`, error);

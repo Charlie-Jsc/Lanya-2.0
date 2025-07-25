@@ -10,26 +10,26 @@ const { formatTime } = require('../../utils/utils');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('queue')
-    .setDescription('Manage the Queue')
+    .setDescription('Gestionar la cola de reproducción')
     .addSubcommand((subcommand) =>
       subcommand
         .setName('view')
-        .setDescription('View list of tracks in the queue')
+        .setDescription('Ver la lista de canciones en la cola')
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName('remove')
-        .setDescription('Remove a song from the queue')
+        .setDescription('Remover una canción de la cola')
         .addIntegerOption((option) =>
           option
             .setName('song')
-            .setDescription('The position of the song you want to remove')
+            .setDescription('La posición de la canción que quieres remover')
             .setRequired(true)
             .setMinValue(1)
         )
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName('clear').setDescription('Clear the whole queue')
+      subcommand.setName('clear').setDescription('Limpiar toda la cola')
     ),
   async execute(interaction) {
     const subcommand = interaction.options.getSubcommand();
@@ -38,14 +38,14 @@ module.exports = {
 
     if (!player || !player.queue.current) {
       return interaction.reply({
-        content: '❌ Nothing is playing!',
+        content: '❌ ¡No se está reproduciendo nada!',
         ephemeral: true,
       });
     }
 
     if (!player.queue.tracks?.length) {
       return interaction.reply({
-        content: '❌ Queue is empty!',
+        content: '❌ ¡La cola está vacía!',
         ephemeral: true,
       });
     }
@@ -78,35 +78,35 @@ module.exports = {
           return new EmbedBuilder()
             .setColor('#B0C4DE')
             .setAuthor({
-              name: 'Music Queue 🎵',
+              name: 'Cola de Música 🎵',
               iconURL: client.user.displayAvatarURL(),
             })
             .setThumbnail(currentTrack.info.artworkUrl)
             .setDescription(
-              `**Now Playing:**\n` +
+              `**Reproduciendo ahora:**\n` +
                 `[${currentTrack.info.title}](${currentTrack.info.uri})\n` +
                 `┗ ${getSourceEmoji(currentTrack.info.sourceName)} \`${currentTrack.info.author}\` • ⌛ \`${formatTime(currentTrack.info.duration)}\`\n\n` +
-                `**Up Next:**\n${queue.join('\n\n')}`
+                `**A continuación:**\n${queue.join('\n\n')}`
             )
             .addFields([
               {
-                name: '🎵 Queue Length',
-                value: `\`${queueTracks.length} tracks\``,
+                name: '🎵 Duración de la Cola',
+                value: `\`${queueTracks.length} canciones\``,
                 inline: true,
               },
               {
-                name: '⌛ Total Duration',
+                name: '⌛ Duración Total',
                 value: `\`${formatTime(totalDuration)}\``,
                 inline: true,
               },
               {
-                name: '🔄 Loop Mode',
+                name: '🔄 Modo de Bucle',
                 value: `\`${player.repeatMode.charAt(0).toUpperCase() + player.repeatMode.slice(1)}\``,
                 inline: true,
               },
             ])
             .setFooter({
-              text: `Page ${page}/${totalPages} • Use the buttons below to navigate`,
+              text: `Página ${page}/${totalPages} • Usa los botones de abajo para navegar`,
               iconURL: interaction.user.displayAvatarURL(),
             })
             .setTimestamp();
@@ -198,7 +198,7 @@ module.exports = {
         const removePos = interaction.options.getInteger('song');
         if (player.queue.tracks?.length < removePos) {
           return interaction.reply({
-            content: "❌ Cannot remove a track that isn't in the queue!",
+            content: "❌ ¡No se puede remover una canción que no está en la cola!",
             ephemeral: true,
           });
         }
@@ -209,20 +209,20 @@ module.exports = {
         const removedEmbed = new EmbedBuilder()
           .setColor('#B0C4DE')
           .setAuthor({
-            name: 'Removed from Queue 🗑️',
+            name: 'Removido de la Cola 🗑️',
             iconURL: client.user.displayAvatarURL(),
           })
           .setDescription(
-            `Removed [${removeTrack.info.title}](${removeTrack.info.uri})`
+            `Removido [${removeTrack.info.title}](${removeTrack.info.uri})`
           )
           .setThumbnail(removeTrack.info.artworkUrl)
           .addFields({
-            name: '🎵 Queue Length',
-            value: `\`${player.queue.tracks.length} tracks remaining\``,
+            name: '🎵 Duración de la Cola',
+            value: `\`${player.queue.tracks.length} canciones restantes\``,
             inline: true,
           })
           .setFooter({
-            text: `Removed by ${interaction.user.tag}`,
+            text: `Removido por ${interaction.user.tag}`,
             iconURL: interaction.user.displayAvatarURL(),
           })
           .setTimestamp();
@@ -238,14 +238,14 @@ module.exports = {
         const clearEmbed = new EmbedBuilder()
           .setColor('#B0C4DE')
           .setAuthor({
-            name: 'Queue Cleared 🧹',
+            name: 'Cola Limpiada 🧹',
             iconURL: client.user.displayAvatarURL(),
           })
           .setDescription(
-            `Successfully cleared \`${queueLength}\` tracks from the queue`
+            `Se limpiaron exitosamente \`${queueLength}\` canciones de la cola`
           )
           .setFooter({
-            text: `Cleared by ${interaction.user.tag}`,
+            text: `Limpiado por ${interaction.user.tag}`,
             iconURL: interaction.user.displayAvatarURL(),
           })
           .setTimestamp();

@@ -1,5 +1,4 @@
 const { EmbedBuilder } = require('discord.js');
-const { t } = require('../utils/translations');
 const TranscriptGenerator = require('./transcriptGenerator');
 const Ticket = require('../models/Ticket');
 const TicketSettings = require('../models/TicketSettings');
@@ -11,10 +10,10 @@ const TicketSettings = require('../models/TicketSettings');
  * @param {String} reason - Optional reason for closing the ticket
  * @returns {Promise<Object>} Result of the operation
  */
-async function closeTicket(channel, closer, reason = 'No reason provided') {
+async function closeTicket(channel, closer, reason = 'No se proporcionó razón') {
   try {
     if (!channel.name.startsWith('ticket-')) {
-      throw new Error('This is not a ticket channel');
+      throw new Error('Este no es un canal de ticket');
     }
 
     const settings = await TicketSettings.findOne({
@@ -26,7 +25,7 @@ async function closeTicket(channel, closer, reason = 'No reason provided') {
     });
 
     if (!ticket) {
-      throw new Error('No active ticket found for this channel');
+      throw new Error('No se encontró un ticket activo para este canal');
     }
 
     const { transcript, attachments } =
@@ -34,16 +33,16 @@ async function closeTicket(channel, closer, reason = 'No reason provided') {
 
     const transcriptEmbed = new EmbedBuilder()
       .setColor('#DDA0DD')
-      .setTitle('Ticket Transcript')
+      .setTitle('Transcripción del Ticket')
       .addFields([
         { name: 'Ticket', value: channel.name, inline: true },
         {
-          name: 'Opened By',
+          name: 'Abierto por',
           value: `<@${ticket.userId}>`,
           inline: true,
         },
-        { name: 'Closed By', value: closer.tag, inline: true },
-        { name: 'Reason', value: reason, inline: true },
+        { name: 'Cerrado por', value: closer.tag, inline: true },
+        { name: 'Razón', value: reason, inline: true },
       ])
       .setTimestamp();
 
@@ -66,7 +65,7 @@ async function closeTicket(channel, closer, reason = 'No reason provided') {
         files: [transcript, ...attachments],
       });
     } catch (err) {
-      console.error('Could not DM transcript to user:', err);
+      console.error('No se pudo enviar la transcripción por DM al usuario:', err);
     }
 
     ticket.status = 'closed';
@@ -75,19 +74,19 @@ async function closeTicket(channel, closer, reason = 'No reason provided') {
     ticket.closeReason = reason;
     await ticket.save();
 
-    await channel.send(t('tickets.ticketClosed'));
+    await channel.send('🔒 Cerrando ticket en 5 segundos...');
 
     setTimeout(async () => {
       try {
         await channel.delete();
       } catch (err) {
-        console.error('Error deleting channel:', err);
+        console.error('Error al eliminar el canal:', err);
       }
     }, 5000);
 
     return { success: true, ticket };
   } catch (error) {
-    console.error('Error in closeTicket function:', error);
+    console.error('Error en la función closeTicket:', error);
     throw error;
   }
 }
