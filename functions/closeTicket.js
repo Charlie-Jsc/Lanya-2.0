@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const { t } = require('../utils/translations');
 const TranscriptGenerator = require('./transcriptGenerator');
 const Ticket = require('../models/Ticket');
 const TicketSettings = require('../models/TicketSettings');
@@ -74,7 +75,7 @@ async function closeTicket(channel, closer, reason = 'No reason provided') {
     ticket.closeReason = reason;
     await ticket.save();
 
-    await channel.send('🔒 Closing ticket in 5 seconds...');
+    await channel.send(t('tickets.ticketClosed'));
 
     setTimeout(async () => {
       try {

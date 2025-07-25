@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { t } = require('../../utils/translations');
 const ms = require('ms');
 
 module.exports = {
@@ -25,12 +26,12 @@ module.exports = {
     const { default: prettyMs } = await import('pretty-ms');
     const user = interaction.options.getUser('user');
     const reason =
-      interaction.options.getString('reason') || 'No reason provided.';
+      interaction.options.getString('reason') || t('ban.noReasonProvided');
     const duration = interaction.options.getString('duration');
     const member = interaction.guild.members.cache.get(user.id);
     if (!member) {
       return interaction.reply({
-        content: 'The user is not in the server',
+        content: t('ban.userNotInServer'),
         ephemeral: true,
       });
     }
@@ -41,22 +42,20 @@ module.exports = {
 
     if (!interaction.member.permissions.has('BanMembers')) {
       return interaction.reply({
-        content: 'You do not have `BanMembers` permission to ban members!',
+        content: t('ban.noPermission'),
         ephemeral: true,
       });
     }
 
     if (member.roles.highest.position >= executor.roles.highest.position) {
       return interaction.reply({
-        content:
-          'You cannot ban this user as they have a higher or equal role.',
+        content: t('ban.cannotBanHigherRole'),
         ephemeral: true,
       });
     }
     if (member.roles.highest.position >= botMember.roles.highest.position) {
       return interaction.reply({
-        content:
-          'I cannot ban this user as they have a higher or equal role than me.',
+        content: t('ban.botCannotBanHigherRole'),
         ephemeral: true,
       });
     }
@@ -67,7 +66,7 @@ module.exports = {
     if (duration) {
       if (!durationRegex.test(duration)) {
         return interaction.reply({
-          content: 'Invalid duration format! Use something like `1d2h30m40s`.',
+          content: t('ban.invalidDuration'),
           ephemeral: true,
         });
       }
@@ -78,20 +77,20 @@ module.exports = {
 
     const banEmbed = new EmbedBuilder()
       .setColor(0xff0000)
-      .setTitle('Member Banned')
-      .setDescription(`⛔ ${user.tag} has been banned from the server.`)
+      .setTitle(t('ban.memberBanned'))
+      .setDescription(t('ban.userBannedDescription', { user: user.tag }))
       .addFields(
-        { name: 'Reason', value: reason, inline: true },
+        { name: t('ban.reason'), value: reason, inline: true },
         {
-          name: 'Banned by',
+          name: t('ban.bannedBy'),
           value: `<@${interaction.user.id}>`,
           inline: true,
         },
         {
-          name: 'Duration',
+          name: t('ban.duration'),
           value: durationInMs
             ? prettyMs(durationInMs, { verbose: true })
-            : 'Permanent',
+            : t('ban.permanent'),
           inline: true,
         }
       )

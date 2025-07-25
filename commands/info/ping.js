@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { t } = require('../../utils/translations');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -8,30 +9,30 @@ module.exports = {
   async execute(interaction) {
     const apiPing = Math.round(interaction.client.ws.ping);
     const sent = await interaction.reply({
-      content: 'Pinging...',
+      content: t('ping.pinging'),
       fetchReply: true,
     });
     const clientPing = sent.createdTimestamp - interaction.createdTimestamp;
 
     const pingEmbed = new EmbedBuilder()
       .setColor(0x5865f2)
-      .setTitle('🏓 Pong!')
+      .setTitle(t('ping.pong'))
       .setThumbnail(interaction.client.user.displayAvatarURL())
       .addFields(
         {
-          name: '📡 API Ping',
+          name: t('ping.apiPing'),
           value: `\`${apiPing}ms\``,
           inline: true,
         },
         {
-          name: '⏱️ Client Ping',
+          name: t('ping.clientPing'),
           value: `\`${clientPing}ms\``,
           inline: true,
         }
       )
-      .setDescription('Here is the latency information for the bot:')
+      .setDescription(t('ping.description'))
       .setFooter({
-        text: `Requested by ${interaction.user.tag}`,
+        text: `${t('ping.requestedBy')} ${interaction.user.tag}`,
         iconURL: interaction.user.displayAvatarURL(),
       })
       .setTimestamp();
