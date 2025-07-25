@@ -16,7 +16,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setColor('#F0E68C')
       .setAuthor({
-        name: 'Now Playing 🎵',
+        name: 'Reproduciendo 🎵',
         iconURL: client.user.displayAvatarURL(),
       })
       .setTitle(track.info.title)
@@ -27,24 +27,24 @@ module.exports = {
       .setThumbnail(track.info.artworkUrl)
       .addFields([
         {
-          name: '👤 Artist',
+          name: '👤 Artista',
           value: `\`${track.info.author}\``,
           inline: true,
         },
         {
-          name: '⌛ Duration',
+          name: '⌛ Duración',
           value: `\`${formatTime(track.info.duration)}\``,
           inline: true,
         },
         {
-          name: '🎧 Requested by',
+          name: '🎧 Solicitado por',
           value: `${track.userData?.requester || 'Unknown'}`,
           inline: true,
         },
       ])
       .setTimestamp()
       .setFooter({
-        text: `Volume: ${player.volume}% | Loop: ${player.repeatMode}`,
+        text: `Volumen: ${player.volume}% | Bucle: ${player.repeatMode}`,
         iconURL:
           track.userData?.requester?.displayAvatarURL() ||
           client.user.displayAvatarURL(),
@@ -93,7 +93,7 @@ module.exports = {
             const previous = await player.queue.shiftPrevious();
             if (!previous) {
               await interaction.followUp({
-                content: 'No previous track found',
+                content: 'No se encontró la pista anterior',
                 ephemeral: true,
               });
               return;
@@ -106,17 +106,17 @@ module.exports = {
           case 'playpause':
             if (!player.paused) {
               await player.pause();
-              footerText = '⏸️ Paused the track';
+              footerText = '⏸️ Pausada la pista';
             } else {
               await player.resume();
-              footerText = '▶️ Resumed the track';
+              footerText = '▶️ Reanudada la pista';
             }
             break;
 
           case 'skip':
             if (!player.queue.tracks?.length) {
               return interaction.followUp({
-                content: 'Queue is empty!',
+                content: '¡La cola está vacía!',
                 ephemeral: true,
               });
             }
@@ -129,7 +129,7 @@ module.exports = {
             const currentIndex = loopModes.indexOf(currentMode);
             const nextIndex = (currentIndex + 1) % loopModes.length;
             player.setRepeatMode(loopModes[nextIndex]);
-            footerText = `🔄 Loop mode set to: ${loopModes[nextIndex]}`;
+            footerText = `🔄 Modo de bucle establecido a: ${loopModes[nextIndex]}`;
             break;
 
           case 'stop':
@@ -140,56 +140,56 @@ module.exports = {
           case 'seekforward':
             if (player.position + 10000 > track.duration) {
               return interaction.followUp({
-                content: `⚠️ Cannot seek beyond the track's duration.`,
+                content: `⚠️ No se puede avanzar más allá de la duración de la pista.`,
                 ephemeral: true,
               });
             }
             await player.seek(player.position + 10000);
-            footerText = '⏩ Skipped forward 10 seconds';
+            footerText = '⏩ Avanzada 10 segundos';
             break;
 
           case 'seekback':
             if (player.position - 10000 < 0) {
               return interaction.followUp({
-                content: '⚠️ Cannot seek before the track starts.',
+                content: '⚠️ No se puede retroceder más allá del inicio de la pista.',
                 ephemeral: true,
               });
             }
             await player.seek(player.position - 10000);
-            footerText = '⏪ Skipped backward 10 seconds';
+            footerText = '⏪ Retrocedida 10 segundos';
             break;
 
           case 'shuffle':
             if (!player.queue.tracks?.length) {
               return interaction.followUp({
-                content: 'Queue is empty!',
+                content: '¡La cola está vacía!',
                 ephemeral: true,
               });
             }
             player.queue.shuffle();
-            footerText = '🔀 Queue shuffled';
+            footerText = '🔀 Cola mezclada';
             break;
 
           case 'volup':
             if (player.volume + 10 > 100) {
               return interaction.followUp({
-                content: '⚠️ Cannot increase volume above 100',
+                content: '⚠️ No se puede aumentar el volumen por encima de 100',
                 ephemeral: true,
               });
             }
             player.setVolume(player.volume + 10);
-            footerText = `🔊 Volume is now ${player.volume}`;
+            footerText = `🔊 El volumen ahora es ${player.volume}`;
             break;
 
           case 'voldown':
             if (player.volume - 10 < 0) {
               return interaction.followUp({
-                content: '⚠️ Cannot decrease volume below 0',
+                content: '⚠️ No se puede disminuir el volumen por debajo de 0',
                 ephemeral: true,
               });
             }
             player.setVolume(player.volume - 10);
-            footerText = `🔉 Volume is now ${player.volume}`;
+            footerText = `🔉 El volumen ahora es ${player.volume}`;
             break;
         }
 
@@ -201,7 +201,7 @@ module.exports = {
         console.error('Error handling music control interaction:', error);
         if (!interaction.replied) {
           await interaction.followUp({
-            content: 'There was an error processing that command!',
+            content: '¡Hubo un error al procesar ese comando!',
             ephemeral: true,
           });
         }

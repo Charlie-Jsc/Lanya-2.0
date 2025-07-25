@@ -3,7 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('ping')
-    .setDescription("Displays the bot's API and client ping."),
+    .setDescription("Muestra la API del bot y el ping del cliente."),
 
   async execute(interaction) {
     const apiPing = Math.round(interaction.client.ws.ping);
@@ -29,9 +29,9 @@ module.exports = {
           inline: true,
         }
       )
-      .setDescription('Here is the latency information for the bot:')
+      .setDescription('Aquí está la información de latencia para el bot:')
       .setFooter({
-        text: `Requested by ${interaction.user.tag}`,
+        text: `Solicitado por ${interaction.user.tag}`,
         iconURL: interaction.user.displayAvatarURL(),
       })
       .setTimestamp();

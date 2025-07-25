@@ -10,17 +10,17 @@ const { formatTime } = require('../../utils/utils');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('search')
-    .setDescription('Search for a song to add to the queue')
+    .setDescription('Buscar una canción para agregar a la cola')
     .addStringOption((option) =>
       option
         .setName('query')
-        .setDescription('Song name or URL')
+        .setDescription('Nombre de la canción o URL')
         .setRequired(true)
     )
     .addStringOption((option) =>
       option
         .setName('source')
-        .setDescription('The source you want to search from')
+        .setDescription('La fuente desde la que quieres buscar')
         .addChoices(
           { name: 'Youtube', value: 'ytsearch' },
           { name: 'Youtube Music', value: 'ytmsearch' },
@@ -37,7 +37,7 @@ module.exports = {
 
     if (!member.voice.channel) {
       return interaction.reply({
-        content: '❌ You need to join a voice channel first!',
+        content: '❌ ¡Necesitas unirte a un canal de voz primero!',
         ephemeral: true,
       });
     }
@@ -46,7 +46,7 @@ module.exports = {
     if (!permissions.has('Connect') || !permissions.has('Speak')) {
       return interaction.reply({
         content:
-          '❌ I need permissions to join and speak in your voice channel!',
+          '❌ ¡Necesito permisos para unirme y hablar en tu canal de voz!',
         ephemeral: true,
       });
     }
@@ -70,7 +70,7 @@ module.exports = {
 
       if (!search?.tracks?.length) {
         return interaction.editReply({
-          content: '❌ No results found! Try a different search term.',
+          content: '❌ ¡No se encontraron resultados! Intenta con un término de búsqueda diferente.',
           ephemeral: true,
         });
       }
@@ -79,13 +79,13 @@ module.exports = {
 
       const selectMenu = new StringSelectMenuBuilder()
         .setCustomId('search_select')
-        .setPlaceholder('Select a song to add to the queue')
+        .setPlaceholder('Selecciona una canción para agregar a la cola')
         .addOptions(
           tracks.map((track, index) =>
             new StringSelectMenuOptionBuilder()
               .setLabel(`${index + 1}. ${track.info.title.slice(0, 95)}`)
               .setDescription(
-                `By ${track.info.author} • ${formatTime(track.info.duration)}`
+                `Por ${track.info.author} • ${formatTime(track.info.duration)}`
               )
               .setValue(track.info.uri)
           )
@@ -96,11 +96,11 @@ module.exports = {
       const searchEmbed = new EmbedBuilder()
         .setColor('#DDA0DD')
         .setAuthor({
-          name: `Search Results for "${query}"`,
+          name: `Resultados de búsqueda para "${query}"`,
           iconURL: client.user.displayAvatarURL(),
         })
         .setDescription(
-          `🔍 Found ${tracks.length} results from ${getSourceEmoji(source)} ${getSourceName(source)}\n\n` +
+          `🔍 Se encontraron ${tracks.length} resultados de ${getSourceEmoji(source)} ${getSourceName(source)}\n\n` +
             tracks
               .map(
                 (track, index) =>
@@ -111,12 +111,12 @@ module.exports = {
         )
         .setThumbnail(tracks[0].info.artworkUrl)
         .addFields({
-          name: '📝 Instructions',
+          name: '📝 Instrucciones',
           value:
-            'Select a track from the dropdown menu below\nThis menu will timeout in 30 seconds',
+            'Selecciona una pista del menú desplegable de abajo\nEste menú expirará en 30 segundos',
         })
         .setFooter({
-          text: `Requested by ${interaction.user.tag} • Select a track to add to queue`,
+          text: `Solicitado por ${interaction.user.tag} • Selecciona una pista para agregar a la cola`,
           iconURL: interaction.user.displayAvatarURL(),
         })
         .setTimestamp();
@@ -138,7 +138,7 @@ module.exports = {
         );
         if (!selectedTrack) {
           return i.reply({
-            content: '❌ Track not found! Please try searching again.',
+            content: '❌ ¡Pista no encontrada! Por favor intenta buscar de nuevo.',
             ephemeral: true,
           });
         }
@@ -154,7 +154,7 @@ module.exports = {
           const addedEmbed = new EmbedBuilder()
             .setColor('#DDA0DD')
             .setAuthor({
-              name: 'Added to Queue 🎵',
+              name: 'Agregado a la Cola 🎵',
               iconURL: client.user.displayAvatarURL(),
             })
             .setTitle(selectedTrack.info.title)
