@@ -178,18 +178,18 @@ module.exports = {
               });
             }
             player.setVolume(player.volume + 10);
-            footerText = `🔊 El volumen ahora es ${player.volume}`;
+            footerText = `🔊 ${player.volume}%`;
             break;
 
           case 'voldown':
             if (player.volume - 10 < 0) {
               return interaction.followUp({
-                content: '⚠️ No se puede disminuir el volumen por debajo de 0',
+                content: '⚠️ No se puede disminuir el volumen por debajo de 0%',
                 ephemeral: true,
               });
             }
             player.setVolume(player.volume - 10);
-            footerText = `🔉 El volumen ahora es ${player.volume}`;
+            footerText = `🔉 ${player.volume}%`;
             break;
         }
 
