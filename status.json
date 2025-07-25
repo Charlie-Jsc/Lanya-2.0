@@ -3,12 +3,6 @@
   "status": [
     {
       "type": "LISTENING",
-      "state": "{userCount} people.",
-      "backup_state": "with {userCount} users",
-      "url": "https://twitch.tv/lanya"
-    },
-    {
-      "type": "LISTENING",
       "state": "🎵 música con {userCount} usuarios",
       "url": "https://twitch.tv/lanya"
     },
