@@ -8,11 +8,14 @@ function updateStatus(client) {
     const statusConfigPath = path.join(process.cwd(), 'status.json');
     const statusConfig = JSON.parse(fs.readFileSync(statusConfigPath, 'utf8'));
 
-    const status = statusConfig.status;
+    const statuses = Array.isArray(statusConfig.status) ? statusConfig.status : [statusConfig.status];
     const interval = statusConfig.interval;
+    let currentStatusIndex = 0;
 
     // Function to update the bot's status
     const updatePresence = () => {
+      const status = statuses[currentStatusIndex];
+      
       // Get the correct ActivityType value directly from the enum
       // ActivityType.Streaming instead of ActivityType['STREAMING']
       let activityType;
@@ -60,6 +63,9 @@ function updateStatus(client) {
         activities: [activity],
         status: 'online',
       });
+
+      // Move to next status for rotation
+      currentStatusIndex = (currentStatusIndex + 1) % statuses.length;
     };
 
     // Set initial status
